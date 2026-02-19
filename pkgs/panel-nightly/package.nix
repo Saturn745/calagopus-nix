@@ -10,12 +10,12 @@
   perl,
   openssl,
 }: let
-  version = "9e3388ce723774867b3e7c6cd7a6bd9701d2da14";
+  version = "0687106c55d36de34d663c672c561d85984ce34a";
   src = fetchFromGitHub {
     owner = "calagopus";
     repo = "panel";
     rev = "${version}";
-    sha256 = "sha256-NkmHpnk84j5h8vKH3OPtg461CX7OuFL+/K6GiHg/I90=";
+    sha256 = "sha256-UTf9PP1luTQpfkR4XF+LKRxjFAI8MyvbPcpoOVCvwKY=";
   };
   frontend = stdenv.mkDerivation (finalAttrs: {
     pname = "calagopus-panel-nightly-frontend";
@@ -53,7 +53,9 @@ in
 
     cargoLock = {
       lockFile = src + "/Cargo.lock";
+
       outputHashes = {
+        # Compact string is missing a hash in Cargo.lock it seems
         "compact_str-0.9.0" = "sha256-kUeH/N9X6XqKaI9ZZgP9HrYxBq4OofWqBANvCnQBBPg=";
       };
     };
