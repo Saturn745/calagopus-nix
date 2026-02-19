@@ -1,0 +1,25 @@
+name: Update packages
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Update panel (stable)
+        run: nix run nixpkgs#nix-update -- panel --flake --subpackage frontend --commit
+
+      - name: Update panel-nightly
+        run: nix run nixpkgs#nix-update -- panel-nightly --flake --version=branch=nightly --subpackage frontend --commit
+
+      - name: Push changes
+        run: git push
