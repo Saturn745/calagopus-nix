@@ -74,6 +74,10 @@ in
       cp -r ${frontend} ./frontend/dist/
     '';
 
+    passthru = {
+      inherit frontend;
+    };
+
     meta = {
       description = "Game server management - made simple";
       homepage = "https://calagopus.com/";
