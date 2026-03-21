@@ -10,8 +10,8 @@
   perl,
   openssl,
 }: let
-  tag = "release-1.0.0-pre.2";
-  version = "1.0.0-pre.2";
+  tag = "release-1.0.0-pre.3";
+  version = "1.0.0-pre.3";
   src = fetchFromGitHub {
     owner = "calagopus";
     repo = "panel";
