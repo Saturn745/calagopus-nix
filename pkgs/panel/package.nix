@@ -10,12 +10,13 @@
   perl,
   openssl,
 }: let
-  version = "0.18.2";
+  tag = "release-1.0.0-pre.2";
+  version = "1.0.0-pre.2";
   src = fetchFromGitHub {
     owner = "calagopus";
     repo = "panel";
-    rev = "${version}";
-    sha256 = "sha256-OsBzmd60qTOQzD+rFZXPpQ5618LSeF+CvjlY1ix0+Xc=";
+    rev = "${tag}";
+    sha256 = "sha256-/12TvW8SYRn2cYyNrgz/HJGX+3OJMaW+6UQlObgTjgM=";
   };
   frontend = stdenv.mkDerivation (finalAttrs: {
     pname = "calagopus-panel-frontend";
@@ -32,7 +33,7 @@
     pnpmDeps = fetchPnpmDeps {
       inherit (finalAttrs) pname version src;
       fetcherVersion = 3;
-      hash = "sha256-A9pGKhd6e1fJWWRN7xt2t26TVlNtlwKYab6ga+vgwgw=";
+      hash = "sha256-lNl/29ba5QmYk2KOZIWcXPB8RmuwAlugCpArLrIsodI=";
     };
 
     buildPhase = ''
@@ -81,5 +82,6 @@ in
       homepage = "https://calagopus.com/";
       license = lib.licenses.mit;
       maintainers = [];
+      mainProgram = "panel-rs";
     };
   })
