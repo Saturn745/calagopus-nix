@@ -55,7 +55,8 @@ in
     cargoLock = {
       lockFile = src + "/Cargo.lock";
       outputHashes = {
-        "compact_str-0.9.0" = "sha256-5Bohbr/wHr0+KJroZUhIf2hdKVUYHX971wykTX52R+w=";
+        "compact_str-0.9.0" = "sha256-kUeH/N9X6XqKaI9ZZgP9HrYxBq4OofWqBANvCnQBBPg=";
+        "garde-0.22.1" = "sha256-xV14dWRbm/Hhv2OPnaO98/lOXqttUFnVsSBhbRs1AsY=";
       };
     };
 
