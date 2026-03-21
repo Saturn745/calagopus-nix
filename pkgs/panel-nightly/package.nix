@@ -82,5 +82,6 @@ in
       homepage = "https://calagopus.com/";
       license = lib.licenses.mit;
       maintainers = [];
+      mainProgram = "panel-rs";
     };
   })
