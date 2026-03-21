@@ -26,7 +26,7 @@ jobs:
         run: nix run nixpkgs#nix-update -- panel --flake --subpackage frontend --commit
 
       - name: Update panel-nightly
-        run: nix run nixpkgs#nix-update -- panel-nightly --flake --version=branch=master --subpackage frontend --commit
+        run: nix run nixpkgs#nix-update -- panel-nightly --flake --version=branch=main --subpackage frontend --commit
 
       - name: Push changes
         run: git push
