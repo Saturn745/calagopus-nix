@@ -16,7 +16,7 @@
     owner = "calagopus";
     repo = "panel";
     rev = "${tag}";
-    sha256 = "sha256-/12TvW8SYRn2cYyNrgz/HJGX+3OJMaW+6UQlObgTjgM=";
+    sha256 = "sha256-jt7Xjzf1mkDCJugDtcVlffcmcpLD72fScOZ6fbxeqOA=";
   };
   frontend = stdenv.mkDerivation (finalAttrs: {
     pname = "calagopus-panel-frontend";
