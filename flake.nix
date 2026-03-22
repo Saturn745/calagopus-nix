@@ -1,6 +1,6 @@
 {
   nixConfig = {
-    extra-substituters = [ "https://calagopus-nix.cachix.org" ];
+    extra-substituters = ["https://calagopus-nix.cachix.org"];
     extra-trusted-public-keys = [
       "calagopus-nix.cachix.org-1:KnwFwKiw7rgY2depzwWWiPmLdW1gL5DfZKNTcUcB0oo="
     ];
@@ -18,7 +18,11 @@
     };
   };
 
-  outputs = {nixpkgs, microvm, ...} @ inputs: let
+  outputs = {
+    nixpkgs,
+    microvm,
+    ...
+  } @ inputs: let
     supportedSystems = [
       "aarch64-darwin"
       "aarch64-linux"
@@ -48,11 +52,15 @@
       };
     in {
       inherit rustToolchain;
-      panel = prev.callPackage ./pkgs/panel/package.nix { inherit rustPlatform; };
-      panel-nightly = prev.callPackage ./pkgs/panel-nightly/package.nix { inherit rustPlatform; };
+      panel = prev.callPackage ./pkgs/panel/package.nix {inherit rustPlatform;};
+      panel-nightly = prev.callPackage ./pkgs/panel-nightly/package.nix {inherit rustPlatform;};
     };
 
-    packages = forAllSystems ({pkgs, system, ...}: let
+    packages = forAllSystems ({
+      pkgs,
+      system,
+      ...
+    }: let
       rustPlatform = pkgs.makeRustPlatform {
         cargo = pkgs.rustToolchain;
         rustc = pkgs.rustToolchain;
@@ -73,26 +81,31 @@
             ({pkgs, ...}: {
               nixpkgs.overlays = [inputs.self.overlays.default];
 
-              # interface type = "user" (SLIRP) is required for forwardPorts to work.
-              # A real TAP interface would require a host bridge; SLIRP is sufficient for local testing.
               microvm = {
                 hypervisor = "qemu";
-                interfaces = [{
-                  type = "user";
-                  id = "panel-test";
-                  mac = "02:00:00:00:00:01";
-                }];
-                forwardPorts = [{
-                  from = "host";
-                  host.port = 8000;
-                  guest.port = 8000;
-                }];
+                interfaces = [
+                  {
+                    type = "user";
+                    id = "panel-test";
+                    mac = "02:00:00:00:00:01";
+                  }
+                ];
+                forwardPorts = [
+                  {
+                    from = "host";
+                    host.port = 8000;
+                    guest.port = 8000;
+                  }
+                  {
+                    from = "host";
+                    host.port = 2222;
+                    guest.port = 22;
+                  }
+                ];
               };
 
               services.calagopus-panel = {
                 enable = true;
-                # pkgs here is the NixOS system's pkgs, not the outer forAllSystems pkgs.
-                # Using it via the module argument avoids cross-system store path issues.
                 environmentFile = pkgs.writeText "panel-test-env" ''
                   APP_ENCRYPTION_KEY=test-only-not-for-production
                 '';
@@ -100,11 +113,19 @@
                 redis.createLocally = true;
               };
 
+              services.openssh = {
+                enable = true;
+                settings.PermitRootLogin = "yes";
+                settings.PermitEmptyPasswords = "yes";
+              };
+              users.users.root.hashedPassword = "";
+
               system.stateVersion = "24.11";
             })
           ];
         };
-      in nixos.config.microvm.declaredRunner;
+      in
+        nixos.config.microvm.declaredRunner;
     });
   };
 }
