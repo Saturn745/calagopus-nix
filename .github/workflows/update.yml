@@ -23,7 +23,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Update panel (stable)
-        run: nix run nixpkgs#nix-update -- panel --flake --subpackage frontend --commit
+        run: nix run nixpkgs#nix-update -- panel --flake --subpackage frontend --version-regex 'release-(.*)' --commit
 
       - name: Push changes
         run: git push
