@@ -2,6 +2,8 @@
   lib,
   fetchFromGitHub,
   rustPlatform,
+  autoPatchelfHook,
+  stdenv,
   perl,
   pkg-config,
   cmake,
@@ -25,12 +27,14 @@ in
     cargoHash = "sha256-BuFXXDkaxh/zNq80vqrAE4JdIbDDEFWrD2Num2xET+4=";
 
     nativeBuildInputs = [
+      autoPatchelfHook
       perl
       pkg-config
       cmake
     ];
 
     buildInputs = [
+      stdenv.cc.cc.lib
       openssl
       libssh2
       zlib
