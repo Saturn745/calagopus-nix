@@ -107,13 +107,12 @@ in {
         APP_USE_DECRYPTION_CACHE=${if cfg.useDecryptionCache then "true" else "false"}
         APP_USE_INTERNAL_CACHE=${if cfg.useInternalCache then "true" else "false"}
         DATABASE_MIGRATE=${if cfg.database.migrate then "true" else "false"}
-        ${lib.optionalString cfg.database.createLocally "DATABASE_URL=postgresql:///calagopus-panel?host=/run/postgresql"}
+        ${lib.optionalString cfg.database.createLocally "DATABASE_URL=postgresql://calagopus-panel@%2Frun%2Fpostgresql/calagopus-panel"}
         ${lib.optionalString (cfg.appLogDirectory != null) "APP_LOG_DIRECTORY=${toString cfg.appLogDirectory}"}
         ${lib.optionalString (cfg.trustedProxies != []) "APP_TRUSTED_PROXIES=${lib.concatStringsSep "," cfg.trustedProxies}"}
         ${lib.optionalString (cfg.sentryUrl != null) "SENTRY_URL=${cfg.sentryUrl}"}
         ${lib.optionalString (cfg.serverName != null) "SERVER_NAME=${cfg.serverName}"}
-        ${lib.optionalString cfg.redis.createLocally
-          "REDIS_URL=unix://${config.services.redis.servers.calagopus-panel.unixSocket}"}
+        ${lib.optionalString cfg.redis.createLocally "REDIS_URL=redis://127.0.0.1:${toString config.services.redis.servers.calagopus-panel.port}"}
       '';
     in {
       description = "Calagopus Panel";
@@ -172,6 +171,8 @@ in {
 
     services.redis.servers.calagopus-panel = lib.mkIf cfg.redis.createLocally {
       enable = true;
+      bind = "127.0.0.1";
+      port = 6379;
     };
   };
 }
