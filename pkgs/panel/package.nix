@@ -10,17 +10,16 @@
   perl,
   openssl,
 }: let
-  tag = "release-1.1.0";
-  version = "1.0.0-pre.3";
+  version = "1.1.0";
   src = fetchFromGitHub {
     owner = "calagopus";
     repo = "panel";
-    rev = "${tag}";
+    rev = "release-${version}";
     sha256 = "sha256-WESVSpQgQOcdN3diaWnzB/qcyEoe2NMelqFkd6skc3g=";
   };
   frontend = stdenv.mkDerivation (finalAttrs: {
     pname = "calagopus-panel-frontend";
-    version = "v${version}";
+    inherit version;
 
     src = src + "/frontend";
 
@@ -49,8 +48,7 @@
 in
   rustPlatform.buildRustPackage (finalAttrs: {
     pname = "calagopus-panel";
-    version = "v${version}";
-    inherit src;
+    inherit version src;
 
     cargoHash = "sha256-PmBjLnjIRzh8cnJGiM/IzfnF1qNCv59abunmN7WBXI8=";
 
