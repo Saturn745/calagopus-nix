@@ -52,6 +52,8 @@ in
     inherit src;
 
     cargoHash = "sha256-09sTVqLUhJFerb9qq5iAv3Ic3C3aEfV7Hl8mcUm8bhI=";
+    cargoBuildFlags = ["-p" "panel-rs"];
+    cargoTestFlags = ["-p" "panel-rs"];
 
     nativeBuildInputs = [
       perl
