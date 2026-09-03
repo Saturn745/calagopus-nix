@@ -10,12 +10,12 @@
   perl,
   openssl,
 }: let
-  version = "6116913a17e208cc880e92720323738af9637046";
+  version = "11eb5ac979ed3b3eb191a701841dbedd7b4fe141";
   src = fetchFromGitHub {
     owner = "calagopus";
     repo = "panel";
     rev = "${version}";
-    sha256 = "sha256-akxtyky0GpTCNuzZW0n5Zxc6V499zXFlkxvf3TxDnJw=";
+    sha256 = "sha256-jcp/hBkkBelHTWKHD+AKMvuDoYYKCC5LcCok+Wie0cQ=";
   };
   frontend = stdenv.mkDerivation (finalAttrs: {
     pname = "calagopus-panel-nightly-frontend";
