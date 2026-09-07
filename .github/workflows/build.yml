@@ -24,14 +24,20 @@ jobs:
               - 'flake.nix'
               - 'flake.lock'
               - 'pkgs/panel-nightly/**'
+            fusequota:
+              - 'flake.nix'
+              - 'flake.lock'
+              - 'pkgs/fusequota/**'
             wings:
               - 'flake.nix'
               - 'flake.lock'
               - 'pkgs/wings/**'
+              - 'pkgs/fusequota/**'
             wings-nightly:
               - 'flake.nix'
               - 'flake.lock'
               - 'pkgs/wings-nightly/**'
+              - 'pkgs/fusequota/**'
 
   build:
     needs: changes

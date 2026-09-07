@@ -50,12 +50,14 @@
         cargo = rustToolchain;
         rustc = rustToolchain;
       };
+      # Statically linked so wings can embed it and extract it onto any host
+      fusequota = prev.pkgsStatic.callPackage ./pkgs/fusequota/package.nix {};
     in {
-      inherit rustToolchain;
+      inherit rustToolchain fusequota;
       panel = prev.callPackage ./pkgs/panel/package.nix {inherit rustPlatform;};
       panel-nightly = prev.callPackage ./pkgs/panel-nightly/package.nix {inherit rustPlatform;};
-      wings = prev.callPackage ./pkgs/wings/package.nix {inherit rustPlatform;};
-      wings-nightly = prev.callPackage ./pkgs/wings-nightly/package.nix {inherit rustPlatform;};
+      wings = prev.callPackage ./pkgs/wings/package.nix {inherit rustPlatform fusequota;};
+      wings-nightly = prev.callPackage ./pkgs/wings-nightly/package.nix {inherit rustPlatform fusequota;};
     };
 
     packages = forAllSystems ({
@@ -68,6 +70,7 @@
         rustc = pkgs.rustToolchain;
       };
     in {
+      inherit (pkgs) fusequota;
       panel = pkgs.callPackage ./pkgs/panel/package.nix {
         inherit rustPlatform;
       };

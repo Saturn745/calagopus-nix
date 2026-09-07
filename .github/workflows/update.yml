@@ -28,6 +28,9 @@ jobs:
       - name: Update panel-nightly
         run: nix run nixpkgs#nix-update -- panel-nightly --flake --version=branch=main --subpackage frontend --commit
 
+      - name: Update fusequota
+        run: nix run nixpkgs#nix-update -- fusequota --flake --version=branch=main --commit
+
       - name: Update wings (stable)
         run: nix run nixpkgs#nix-update -- wings --flake --version-regex 'release-(.*)' --commit
 
