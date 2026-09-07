@@ -2,6 +2,9 @@
   lib,
   fetchFromGitHub,
   rustPlatform,
+  fusequota,
+  autoPatchelfHook,
+  stdenv,
   perl,
   pkg-config,
   cmake,
@@ -26,12 +29,14 @@ in
     cargoHash = "sha256-m31lZ0u3SMR5ObSkzXNYIy5XFowjgH0zrrDh300m/uM=";
 
     nativeBuildInputs = [
+      autoPatchelfHook
       perl
       pkg-config
       cmake
     ];
 
     buildInputs = [
+      stdenv.cc.cc.lib
       openssl
       libssh2
       zlib
@@ -39,10 +44,18 @@ in
 
     cargoBuildFlags = ["-p" "wings-rs"];
 
-    env = {
-      CARGO_GIT_BRANCH = "main";
-      CARGO_GIT_COMMIT = rev;
-    };
+    env =
+      {
+        CARGO_GIT_BRANCH = "main";
+        CARGO_GIT_COMMIT = rev;
+      }
+      // lib.optionalAttrs stdenv.hostPlatform.isLinux {
+        # build.rs embeds a fusequota binary in wings, downloading one from
+        # GitHub releases if it has to, and refuses to build on linux without
+        # one. There is no network in the sandbox, so hand it ours.
+        FUSEQUOTA_BINARY_PATH = lib.getExe fusequota;
+        FUSEQUOTA_RELEASE = fusequota.version;
+      };
 
     meta = {
       description = "Pterodactyl Wings alternative written in Rust — faster, more features, more maintainable (nightly build)";

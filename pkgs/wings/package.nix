@@ -2,6 +2,7 @@
   lib,
   fetchFromGitHub,
   rustPlatform,
+  fusequota,
   autoPatchelfHook,
   stdenv,
   perl,
@@ -43,10 +44,18 @@ in
     # Build only the application binary (wings-rs), not the workspace defaults
     cargoBuildFlags = ["-p" "wings-rs"];
 
-    env = {
-      CARGO_GIT_BRANCH = "unknown";
-      CARGO_GIT_COMMIT = "unknown";
-    };
+    env =
+      {
+        CARGO_GIT_BRANCH = "unknown";
+        CARGO_GIT_COMMIT = "unknown";
+      }
+      // lib.optionalAttrs stdenv.hostPlatform.isLinux {
+        # build.rs embeds a fusequota binary in wings, downloading one from
+        # GitHub releases if it has to, and refuses to build on linux without
+        # one. There is no network in the sandbox, so hand it ours.
+        FUSEQUOTA_BINARY_PATH = lib.getExe fusequota;
+        FUSEQUOTA_RELEASE = fusequota.version;
+      };
 
     meta = {
       description = "Pterodactyl Wings alternative written in Rust — faster, more features, more maintainable";
