@@ -15,7 +15,7 @@
 in
   stdenv.mkDerivation (finalAttrs: {
     pname = "fusequota";
-    version = "0-unstable-2026-09-05";
+    version = "9919455-unstable-2026-09-05";
 
     src = fetchFromGitHub {
       owner = "calagopus";
